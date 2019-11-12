@@ -1,8 +1,14 @@
-const moveUp = 82;
+const moveUp = -82;
 const moveRight = 101;
 const moveDown = -1 * moveUp;
 const moveLeft = -1 * moveRight;
-// const spriteList = {boy: 'images/char-boy.png', cat: 'images/char-cat-girl.png', princess: 'images/char-princess-girl.png'};
+let upPressed = false;
+let rightPressed = false;
+let downPressed = false;
+let leftPressed = false;
+let score = document.getElementById("score");
+let lives = Array.from(document.getElementById("lives").innerText);
+const spriteList = {boy: 'images/char-boy.png', cat: 'images/char-cat-girl.png', princess: 'images/char-princess-girl.png'};
 
 
 //Enemy Class
@@ -30,59 +36,124 @@ class Player {
     constructor(){
         this.sprite = 'images/char-cat-girl.png';
         this.x = 400;
-        this.y = 650;
-        this.xMovement = 0;
-        this.yMovement = 0;
-        console.log('Created!');
+        this.y = 550;
     }
     update(dt){
-        this.x += this.speed * dt;
+        if(leftPressed && this.x > 0){
+            this.x += moveLeft;
+            leftPressed = false;
+        }
+        else if(rightPressed && this.x < 606){
+            this.x += moveRight;
+            rightPressed = false;
+        }
+        else if(upPressed && this.y > 0){
+            this.y += moveUp;
+            upPressed = false;
+        }
+        else if(downPressed && this.y < 500){
+            this.y += moveDown;
+            downPressed = false;
+        }
+        levelUp();
+        checkCollision();
+    }
+     handleInput(pressed){
+        if(pressed == 'left'){
+            leftPressed = true;
+        }
+        else if(pressed == 'right'){
+            rightPressed = true;
+        }
+        else if(pressed == 'up'){
+            upPressed = true;
+        }
+        else if(pressed == 'down'){
+            downPressed = true;
+        }
     }
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-    handleInput(direction){
-        switch(direction){
-            case 'left':
-                if(this.x > 0)
-                    this.xMovement += moveLeft;
-                break;
-            case 'right':
-                if(this.x < 810)
-                    this.xMovement += moveRight;
-            case 'up':
-                if(this.y > 0)
-                    this.yMovement += moveUp;
-                break;
-            case 'down':
-                if(this.y < 756)
-                    this.yMovement += moveDown;
-                break;
-        }
+    reset(){
+        this.x = 400;
+        this.y = 550;
     }
 }
 
 //Instantiates enemies and player
-const allEnemies = [new Enemy(), new Enemy()];
+const allEnemies = [new Enemy()];
 let player = new Player();
+ 
+//Strange that I couldn't get the below functions 
+//to work as part of the Player class.
+//Will look into it afterwards. 
 
+//Increases the score and increase difficulty
+//when the player successfully reaches the water.
+function levelUp(){
+    if(player.y <= -24){
+        setTimeout(player.reset(), 3000);
+        let currentScore = Number(score.innerHTML);
+        score.innerHTML = currentScore + 50;
+        allEnemies.push(new Enemy());
+    }
+}
 
-//Player Movement
-document.addEventListener('keyup', function(e) {
+//Checks if enemy and player collide
+//If collide is detected, the last enemy created is removed,
+//the player loses a life, and is reset to the start position. 
+function checkCollision(){
+    for(const enemy of allEnemies){
+        const diffX = Math.abs(player.x - enemy.x);
+        const diffY = Math.abs(player.y - enemy.y);
+        if(diffX <= 50 && diffY <= 50){
+            livesLeft();
+            let currentScore = Number(score.innerHTML);
+            if(currentScore > 0){
+                score.innerHTML = currentScore - 50;
+                allEnemies.pop();
+            }
+            player.reset();
+        }  
+    } 
+}
+
+//Checks if the player has lives remaining and
+//ends game if no more lives left.
+function livesLeft(){
+    if(lives.length !== 0){
+        lives.pop();
+        document.getElementById("lives").innerText = lives.join();
+    } else {
+        gameOver();
+    }
+}
+
+function gameOver(){
+    document.removeEventListener('keydown', function(e){});
+}
+
+function restartGame(){
+    location.reload();
+}
+
+//Player movement event listeners that only allow input from the listed keys
+document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
 
-//check x, y
-function clickLocation(event){
-    console.log(event.clientX, event.clientY);
-}
+//can use the below function to double check the x or y of
+//the player or the click location on the document
+// function clickLocation(event){
+//     console.log(player.x, player.y, event.clientX, event.clientY);
+// }
 
-document.addEventListener("click", clickLocation);
+// document.addEventListener("click", clickLocation);
