@@ -9,6 +9,8 @@ body {
     font-family: 'Poppins', sans-serif;
     font-size: 110%;
     background-color: #D6EFFF;
+    background-image: url('../images/insect.blue.png');
+    background-repeat: repeat-x repeat-y;
     color: #241023;
 }
 
@@ -33,6 +35,8 @@ div #container {
 
 ol {
 	display: inline-block;
+	background-color: #99D19C;
+	padding: 20px;
 }
 
 ol li {
