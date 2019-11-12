@@ -24,8 +24,9 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 810;
-    canvas.height = 756;
+    canvas.width = 607;
+    canvas.height = 567;
+    ctx.scale(0.75,0.75);
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -79,7 +80,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -140,7 +140,6 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
         renderEntities();
     }
 

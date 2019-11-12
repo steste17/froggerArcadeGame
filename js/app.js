@@ -8,8 +8,8 @@ let downPressed = false;
 let leftPressed = false;
 let score = document.getElementById("score");
 let lives = Array.from(document.getElementById("lives").innerText);
-const spriteList = {boy: 'images/char-boy.png', cat: 'images/char-cat-girl.png', princess: 'images/char-princess-girl.png'};
-
+const howToPlay = document.querySelector('ol');
+const directions = document.getElementById('howToPlay');
 
 //Enemy Class
 class Enemy {
@@ -122,7 +122,7 @@ function checkCollision(){
 //Checks if the player has lives remaining and
 //ends game if no more lives left.
 function livesLeft(){
-    if(lives.length !== 0){
+    if(lives.length >= 1){
         lives.pop();
         document.getElementById("lives").innerText = lives.join();
     } else {
@@ -131,7 +131,12 @@ function livesLeft(){
 }
 
 function gameOver(){
-    document.removeEventListener('keydown', function(e){});
+    swal({
+        title: "GAME OVER 😢",
+        text: "Play again?",
+        button: "One more time!"
+    })
+    .then((value) => restartGame());
 }
 
 function restartGame(){
@@ -147,6 +152,21 @@ document.addEventListener('keydown', function(e) {
         40: 'down'
     };
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+//Disables default arrow key scrolling
+window.addEventListener('keydown', function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
+//Shows and hides how to play directions
+document.addEventListener('click', function(e){
+    if(e.target == directions){
+        howToPlay.classList.toggle('hidden');
+    }
 });
 
 

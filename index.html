@@ -4,29 +4,34 @@
     <meta charset="UTF-8">
     <title>Bug Dodger: Frogger Arcade Recreation</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Poppins&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<header>
-		<h1>Bring Your Treasure Home</h1>
+		<h1><strong style="font-family:'Poppins', sans-serif; font-size: 120%;">ESCAPE</strong> the Bug Invasion</h1>
 	</header>
 	<div id="container">
-		<h2>How to Play</h2>
-		<ol>
-			<li>Use the left or right arrow key to highlight a character. Press spacebar to select.</li>
-			<li>Use the left, right, up or down arrow keys to move your character toward the ship.</li>
-			<li>If you hit a bug, you lose a life! When you reach 0 lives, the game ends.</li>
-			<li>Sometimes treasure will appear, pick up the treasure before returning to the ship for extra points.</li>
-			<li>See how many times you can make it back to your ship! Good luck!</li>
-		</ol>
+		<div id="playerDashboard">
+			<ul>
+				<li>SCORE: <i id="score">0</i></li>
+				<li>LIVES: <i id="lives">❤❤❤</i></li>
+			</ul>
+		</div>
 	</div>
-	<div id="playerDashboard">
-		<ul>
-			<li>Score: <i id="score">0</i></li>
-			<li>Lives: <i id="lives">♡♡♡</i></li>
-		</ul>
+    <div id="scripts">
+    	<script src="js/resources.js"></script>
+    	<script src="js/engine.js"></script>
+    </div>
+    <div id="directions">
+		<h2 id="howToPlay">HOW TO PLAY🕹</h2>
+			<ol class="hidden">
+				<li>Use the ⬅️, ➡️, ⬆️ or ⬇️ arrow keys to move your character toward the ship.</li>
+				<li>Move to the water 🌊 to escape the bugs.</li>
+				<li>If you hit a bug 🐞, you lose a life! When you reach 0 lives left and get hit again, the game ends.</li>
+				<li>See how many times you can make it to the water! Good luck! 👍</li>
+			</ol>
 	</div>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+	<script src="js/app.js"></script>
 </body>
 </html>
