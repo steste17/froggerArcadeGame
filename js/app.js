@@ -6,8 +6,8 @@ let upPressed = false;
 let rightPressed = false;
 let downPressed = false;
 let leftPressed = false;
-let score = document.getElementById("score");
-let lives = Array.from(document.getElementById("lives").innerText);
+let score = document.getElementById('score');
+let lives = Array.from(document.getElementById('lives').innerText);
 const howToPlay = document.querySelector('ol');
 const directions = document.getElementById('howToPlay');
 
@@ -76,6 +76,14 @@ class Player {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
     reset(){
+        //This for...loop instead of setTimeout() in the levelUp();
+        //because setTimeout() wasn't delaying to the correct time
+        let start = new Date().getTime();
+        const milliseconds = 500;
+        for (let i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+                break;
+        }}
         this.x = 400;
         this.y = 550;
     }
@@ -93,9 +101,9 @@ let player = new Player();
 //when the player successfully reaches the water.
 function levelUp(){
     if(player.y <= -24){
-        setTimeout(player.reset(), 3000);
         let currentScore = Number(score.innerHTML);
-        score.innerHTML = currentScore + 50;
+        score.innerHTML = currentScore + 100;
+        player.reset();
         allEnemies.push(new Enemy());
     }
 }
@@ -124,7 +132,7 @@ function checkCollision(){
 function livesLeft(){
     if(lives.length >= 1){
         lives.pop();
-        document.getElementById("lives").innerText = lives.join();
+        document.getElementById('lives').innerText = lives.join();
     } else {
         gameOver();
     }
@@ -132,12 +140,36 @@ function livesLeft(){
 
 function gameOver(){
     swal({
-        title: "GAME OVER 😢",
-        text: "Play again?",
-        button: "One more time!"
+        title: 'GAME OVER 😢',
+        text: 'Play again?',
+        icon: 'error',
+        buttons: {
+            cancel: 'No thanks',
+            again: {
+                text: 'Again!',
+                value: 'again',
+            },
+        }
     })
-    .then((value) => restartGame());
+    .then((value) => {
+        switch(value){
+            case'again':
+                swal({
+                    title: 'You got this! Good luck!',
+                    icon: 'success',
+                    button: 'Restart'})
+                    .then((value) => restartGame());
+                break;
+            default:
+                swal({
+                    title: '...and the world was eaten by bugs.',
+                    icon: 'warning',
+                    button: 'Nooooo!'})
+                    .then((value) => restartGame());
+        }
+    })
 }
+
 
 function restartGame(){
     location.reload();
@@ -162,10 +194,12 @@ window.addEventListener('keydown', function(e) {
     }
 }, false);
 
-//Shows and hides how to play directions
+//Shows and hides how to play directions, scrolls down automatically
+//so user can see directions
 document.addEventListener('click', function(e){
     if(e.target == directions){
         howToPlay.classList.toggle('hidden');
+        window.scrollBy(0, 200);
     }
 });
 

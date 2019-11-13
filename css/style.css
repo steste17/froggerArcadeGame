@@ -9,22 +9,20 @@ body {
     font-family: 'Poppins', sans-serif;
     font-size: 110%;
     background-color: #D6EFFF;
-    background-image: url('../images/insect.blue.png');
-    background-repeat: repeat-x repeat-y;
+    background-image: url('../images/BugInvasionBackground.png');
     color: #241023;
 }
 
 h1, h2 {
-	font-family: 'Bree Serif', cursive;
+	font-family: 'Holtwood One SC', serif;
 }
 
 h1 {
 	font-size: 250%;
-	font-weight: 300;
 }
 
 h2{
-	color: #73AB84;
+	color: #241023;
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -33,20 +31,30 @@ div #container {
 	display: flex;
 }
 
+canvas {
+	display: inline-block;
+	order: 0;
+}
+
 ol {
 	display: inline-block;
-	background-color: #99D19C;
+	background-color: rgba(45, 160, 237, .7);
 	padding: 20px;
+	border-color: #B8CDDB;
 }
 
 ol li {
 	text-align: left;
+	font-weight: 500;
 }
 
 ul {
 	list-style-type: none;
 	margin-bottom: 0;
 	margin-top: 0;
+	background-color: #2da0ed;
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
 ul li {
@@ -55,9 +63,19 @@ ul li {
 	padding-left: 2%;
 	padding-right: 2%;
 	font-size: 1.6em;
+	font-weight: 800;
 }
+
 
 .hidden {
 	display: none;
+}
+
+.swal-button--cancel {
+	background-color: #D6EFFF;
+}
+
+.swal-button--confirm, .swal-button--again {
+	background-color: #2da0ed;
 }
 
